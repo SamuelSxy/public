@@ -2,8 +2,10 @@ syntax = "proto3";
 
 package demo.v1;
 
-service Demo {
-  rpc SayHello (HelloRequest) returns (HelloResponse) {};
+option go_package="./;demo";
+
+service DemoService {
+  rpc TestShow (TestRequest) returns (TestResponse) {};
 }
 
 message TestRequest {
