@@ -75,7 +75,7 @@ func (a *App) Stop() error {
 
 }
 
-func main() {
+func NewApp() {
 
 	http := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "Http START")
@@ -85,4 +85,8 @@ func main() {
 
 	app := New("0.0.0.0:8080", http)
 	app.Run()
+}
+
+func main() {
+	initApp()
 }
