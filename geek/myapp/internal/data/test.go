@@ -8,6 +8,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+var (
+	NoUser = errors.New("user not found")
+)
+
 type mysql struct {
 	db *sql.DB
 }
@@ -24,7 +28,7 @@ func (m *mysql) GetById(id string) (string, error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return name, errors.Wrap(err, fmt.Sprintf("sqlScript: %s\r\nerror: %v\r\n", sqlScript, err))
+			return name, errors.Wrap(NoUser, fmt.Sprintf("sqlScript: %s\r\nerror: %v\r\n", sqlScript, err))
 		} else {
 			return name, errors.Wrap(err, "other sqlErr")
 		}
