@@ -7,9 +7,8 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
-	"github.com/go-kratos/kratos/pkg/sync/errgroup"
+	"golang.org/x/sync/errgroup"
 )
 
 type App struct {
@@ -59,7 +58,6 @@ func (a *App) Run() {
 			return a.Stop()
 		}
 
-		return nil
 	})
 
 	if err := eg.Wait(); err != nil {
@@ -75,18 +73,20 @@ func (a *App) Stop() error {
 
 }
 
-func NewApp() {
+func NewApp() *App {
 
 	http := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		service, _ := initApp()
 		fmt.Fprintln(w, "Http START")
-		time.Sleep(1 * time.Second)
+		fmt.Fprintln(w, service.Name)
 		fmt.Fprintln(w, "Http END")
 	})
 
-	app := New("0.0.0.0:8080", http)
-	app.Run()
+	return New("0.0.0.0:8080", http)
+
 }
 
 func main() {
-	initApp()
+	app := NewApp()
+	app.Run()
 }

@@ -3,6 +3,7 @@
 package main
 
 import (
+	demo_v1 "myapp/api/demo/v1"
 	"myapp/internal/biz"
 	"myapp/internal/data"
 	"myapp/internal/service"
@@ -10,7 +11,6 @@ import (
 	"github.com/google/wire"
 )
 
-// initApp init application.
-func initApp() {
-	panic(wire.Build(data.Test, biz.NewTestRequst, service.NewTest, NewApp()))
+func initApp() (*demo_v1.TestResponse, error) {
+	panic(wire.Build(data.NewMySQL, biz.NewBizDemo, service.NewServiceDemo))
 }

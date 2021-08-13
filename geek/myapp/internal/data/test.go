@@ -14,6 +14,11 @@ var (
 
 type mysql struct {
 	db *sql.DB
+	MysqlConn
+}
+
+type MysqlConn interface {
+	GetNameById(string) (string, error)
 }
 
 func NewMySQL(addr string) *mysql {
@@ -21,7 +26,7 @@ func NewMySQL(addr string) *mysql {
 	return &mysql{db: mydb}
 }
 
-func (m *mysql) GetById(id string) (string, error) {
+func (m *mysql) GetNameById(id string) (string, error) {
 	var name string
 	sqlScript := "select name from user where id = ?"
 	err := m.db.QueryRow(sqlScript, id).Scan(name)

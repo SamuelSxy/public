@@ -1,17 +1,17 @@
 syntax = "proto3";
 
-package demo.v1;
+package demo_v1;
 
-option go_package="./;demo";
+option go_package="./;demo_v1";
 
 service DemoService {
-  rpc TestShow (TestRequest) returns (TestResponse) {};
+  rpc GetUserByID (TestRequest) returns (TestResponse) {};
 }
 
 message TestRequest {
-  string name = 1;
+  string id = 1;
 }
 
 message TestResponse {
-  string message = 1;
+  string name = 1;
 }
