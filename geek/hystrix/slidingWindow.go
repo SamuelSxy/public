@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"sync"
 	"time"
@@ -64,7 +63,7 @@ func (r *Window) getCurrentBucket() *windowBucket {
 
 func (r *Window) removeOldBuckets() {
 
-	time := time.Now().UnixNano()/1e8 - 100 //剔除1s前的桶
+	time := time.Now().UnixNano()/1e8 - 10 //剔除1s前的桶
 
 	for timestamp := range r.Buckets {
 		if timestamp <= time {
@@ -84,13 +83,13 @@ func (r *Window) Statistics(code int) error {
 
 	switch code {
 	case 0:
-		bucket.Value.successNum += 1
+		bucket.Value.successNum++
 	case 1:
-		bucket.Value.failureNum += 1
+		bucket.Value.failureNum++
 	case 2:
-		bucket.Value.timeoutNum += 1
+		bucket.Value.timeoutNum++
 	case 3:
-		bucket.Value.rejectionNum += 1
+		bucket.Value.rejectionNum++
 	}
 
 	total := bucket.Value.successNum + bucket.Value.failureNum + bucket.Value.timeoutNum + bucket.Value.rejectionNum
@@ -103,7 +102,6 @@ func (r *Window) Statistics(code int) error {
 		return nil
 	}
 
-	log.Println(total, bucket.Value.successNum, rate)
 	return errors.Wrap(RateAlert, fmt.Sprintf("total: %d,success: %d\r\nrate:%f\r\n达到预警值", total, bucket.Value.successNum, rate))
 }
 
@@ -116,6 +114,7 @@ func main() {
 			fmt.Printf("%v\n", err)
 			time.Sleep(1 * time.Second)
 		} else {
+			fmt.Printf("success:%d\n", i)
 			time.Sleep(10 * time.Microsecond)
 		}
 
